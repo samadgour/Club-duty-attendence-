@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Club Duty Attendance</title>
+<style>
+:root{--bg:#eef3f2;--surface:#fff;--ink:#12242b;--mute:#5b6b72;--line:#d9e2e0;--ok:#0b7a62;--ok-bg:#d3f0e7;--dk:#12242b;--dk-ink:#f2f8f6;--sun:#fbe7b8;--warn:#9a5b00;--btn:#12242b;--btn-ink:#fff;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1519;--surface:#142329;--ink:#e8f1ef;--mute:#9bb0b5;--line:#243840;--ok:#4fd1b0;--ok-bg:#12372f;--dk:#1d343c;--dk-ink:#f2f8f6;--sun:#3d3216;--warn:#f0b04a;--btn:#e8f1ef;--btn-ink:#0b1519;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1519;--surface:#142329;--ink:#e8f1ef;--mute:#9bb0b5;--line:#243840;--ok:#4fd1b0;--ok-bg:#12372f;--dk:#1d343c;--dk-ink:#f2f8f6;--sun:#3d3216;--warn:#f0b04a;--btn:#e8f1ef;--btn-ink:#0b1519;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Figtree,system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:980px;margin:0 auto;padding:16px 14px 48px}
+h1{font-size:30px;line-height:1.1;margin:0 0 6px;font-weight:800;letter-spacing:-.025em}
+h2{font-size:17px;margin:0 0 10px;font-weight:700}
+p{margin:0 0 10px}.mute{color:var(--mute);font-size:14px}
+.bar-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;grid-auto-rows:minmax(110px,auto)}
+.t{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:18px;min-width:0;display:flex;flex-direction:column}
+.w2{grid-column:span 2}.w4{grid-column:span 4}.h2{grid-row:span 2}
+.dk{background:var(--dk);color:var(--dk-ink);border-color:transparent}.dk .mute{color:var(--dk-ink);opacity:.7}
+.okt{background:var(--ok-bg);border-color:transparent;color:var(--ink)}
+.sun{background:var(--sun);border-color:transparent}
+.big{font-size:56px;line-height:1;font-weight:800;letter-spacing:-.04em;margin-top:auto}
+.push{margin-top:auto}
+label{display:block;font-weight:500;font-size:14px;margin:10px 0 4px}
+input,select{width:100%;font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink)}
+button{font:inherit;font-weight:700;border:0;border-radius:12px;padding:12px 16px;background:var(--btn);color:var(--btn-ink);cursor:pointer}
+button.ghost{background:transparent;color:inherit;border:1px solid var(--line)}
+button.wa{background:#1fa855;color:#fff}
+button.lite{background:var(--dk-ink);color:var(--dk)}
+a.btn{display:inline-block;font-weight:700;border-radius:12px;padding:12px 16px;text-decoration:none;background:#1fa855;color:#fff}
+button.sm{padding:8px 12px;font-size:14px}
+button:disabled{opacity:.4;cursor:not-allowed}
+:focus-visible{outline:3px solid var(--ok);outline-offset:2px}
+.row{display:flex;gap:8px;align-items:center}.row>input{flex:1}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:12px}
+.err{color:var(--warn);font-size:14px;margin-top:8px}
+.studs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.stu{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:var(--bg);color:var(--ink);border:2px solid var(--line);padding:12px;border-radius:16px;font-weight:700;min-height:84px;width:100%}
+.stu small{font-weight:400;color:var(--mute)}.stu .tm{margin-top:auto;font-size:12px;color:var(--ok);font-weight:700}
+.stu.on{border-color:var(--ok);background:var(--ok-bg)}
+.bar{height:10px;background:rgba(0,0,0,.12);border-radius:10px;overflow:hidden;margin-top:12px}.bar i{display:block;height:100%;background:var(--ok);transition:width .2s}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}.chip{background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:3px 10px;font-size:13px}
+.item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}.item b{display:block}
+.seal{display:flex;gap:10px;align-items:center;font-weight:800;font-size:20px}.seal svg{flex:none;color:var(--ok)}
+.id{font-weight:800;font-size:22px;letter-spacing:.02em;margin-top:auto;word-break:break-all}
+.tbl{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--line);white-space:nowrap}th{color:var(--mute);font-weight:500}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}dt{color:var(--mute)}dd{margin:0;font-weight:500}
+@media (max-width:720px){.grid{grid-template-columns:repeat(2,1fr)}.w4{grid-column:span 2}.big{font-size:44px}h1{font-size:26px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main id="app"><p class="mute">Loading Club Duty Attendance...</p></main>
+<noscript><p style="padding:16px">JavaScript is turned off in this browser. Please turn it on to use this page.</p></noscript>
+<script>window.onerror=function(m,u,l){var a=document.getElementById("app");if(a){a.innerHTML="<div style=\"padding:16px\"><b>Something went wrong:</b> "+String(m)+" (line "+l+")</div>"}};</script>
+<script>
+(function(){
+var CLUBS={"Web Development Club":[["Aarav Mehta","21CS014"],["Diya Sharma","21CS022"],["Kabir Singh","21CS031"],["Meera Nair","21CS047"],["Rohan Gupta","21IT009"],["Sneha Patel","21IT018"],["Tanvi Joshi","21CS063"],["Yash Verma","21IT027"]],
+"Robotics Club":[["Ishaan Rao","21EC005"],["Nisha Kapoor","21EC016"],["Param Desai","21ME011"],["Riya Bansal","21EC029"],["Vikram Iyer","21ME024"],["Zoya Khan","21EC038"]],
+"Cultural Club":[["Anaya Bose","21CS071"],["Dev Malhotra","21IT033"],["Hiba Ali","21EC044"],["Kunal Shah","21ME037"],["Pooja Reddy","21CS058"],["Sahil Arora","21IT041"]]};
+var S={user:null,sessions:[],cur:null,sel:null,view:"login",err:""};
+function save(){try{localStorage.setItem("cda",JSON.stringify({user:S.user,sessions:S.sessions,cur:S.cur}))}catch(e){}}
+function load(){try{var d=JSON.parse(localStorage.getItem("cda")||"null");if(d&&typeof d==="object"){S.user=(d.user&&d.user.name)?d.user:null;S.sessions=Array.isArray(d.sessions)?d.sessions:[];S.cur=(d.cur&&d.cur.members&&d.cur.present)?d.cur:null;S.view=S.user?(S.cur?"live":"home"):"login"}}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function hm(t){return new Date(t).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}
+function dt(t){return new Date(t).toLocaleDateString([],{day:"numeric",month:"short",year:"numeric"})}
+var SEAL='<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>';
+function hdr(){return '<div class="bar-top"><div class="mute">'+esc(S.user.name)+' · '+esc(S.user.club)+'</div><button class="ghost sm" data-a="out">Sign out</button></div>'}
+function mine(){return S.sessions.filter(function(s){return s.club===S.user.club})}
+function vLogin(){var o=Object.keys(CLUBS).map(function(c){return '<option>'+esc(c)+'</option>'}).join("");
+return '<div class="grid"><div class="t dk w2 h2"><h1>Club Duty Attendance</h1><p class="mute" style="font-weight:700;margin:0 0 10px">by Samad Gour</p><p class="mute">Mark who attended your club event and send the verified list to faculty.</p></div><div class="t w2 h2"><h2>Coordinator sign-in</h2><label for="n">Your name</label><input id="n" placeholder="e.g. Samad Gour" autocomplete="name"><label for="c">Your club</label><select id="c">'+o+'</select><div class="err">'+esc(S.err)+'</div><div class="btns"><button data-a="in">Sign in</button></div></div><div class="t sun w4"><p class="mute" style="margin:0">Prototype: sign-in is a demo and data stays in this browser.</p></div></div>'}
+function vHome(){var m=mine(),tot=m.reduce(function(a,s){return a+s.present.length},0);
+var l=m.map(function(s){return '<div class="item"><div><b>'+esc(s.event)+'</b><span class="mute">'+dt(s.start)+' · '+s.present.length+' students</span></div><button class="ghost sm" data-a="open" data-id="'+s.id+'">View</button></div>'}).join("")||'<p class="mute">No lists yet. Start a session when your event begins.</p>';
+var ch=CLUBS[S.user.club].map(function(x){return '<span class="chip">'+esc(x[0].split(" ")[0])+'</span>'}).join("");
+return hdr()+'<div class="grid"><div class="t dk w2"><h1>Hello, '+esc(S.user.name.split(" ")[0])+'</h1><p class="mute push" style="margin:0">Ready to take attendance?</p></div>'
++'<div class="t okt w2"><h2>Live attendance</h2><p class="mute">Open a session and tap students as they arrive.</p><div class="btns"><button data-a="new">Start attendance session</button></div></div>'
++'<div class="t"><div class="mute">Verified lists</div><div class="big">'+m.length+'</div></div>'
++'<div class="t sun"><div class="mute">Students marked</div><div class="big">'+tot+'</div></div>'
++'<div class="t w2"><h2>Club members ('+CLUBS[S.user.club].length+')</h2><div class="chips">'+ch+'</div></div>'
++'<div class="t w2 h2"><h2>Verified lists</h2>'+l+'</div>'
++'<div class="t w2 h2"><h2>Verify a list</h2><p class="mute">Faculty can check a verification ID here.</p><div class="row"><input id="vid" placeholder="e.g. WDC-0311-4KQ2" aria-label="Verification ID"><button data-a="ver">Check</button></div><div id="vres" class="push"></div></div></div>'}
+function vNew(){return hdr()+'<div class="grid"><div class="t dk w2"><h1>New session</h1><p class="mute push" style="margin:0">'+esc(S.user.club)+'</p></div><div class="t w2 h2"><label for="ev" style="margin-top:0">Event name</label><input id="ev" placeholder="e.g. Hackathon prep meeting"><label for="vn">Venue</label><input id="vn" placeholder="e.g. Seminar Hall B"><div class="err">'+esc(S.err)+'</div><div class="btns"><button data-a="begin">Begin live attendance</button><button class="ghost" data-a="home">Cancel</button></div></div><div class="t sun w2"><p class="mute" style="margin:0">Students you mark get a timestamp. The list locks when you end the session.</p></div></div>'}
+function vLive(){var c=S.cur,n=c.present.length,tot=c.members.length;
+var rows=c.members.map(function(m,i){var p=c.present.find(function(x){return x.roll===m[1]});
+return '<button class="stu'+(p?' on':'')+'" data-a="tog" data-i="'+i+'" aria-pressed="'+!!p+'">'+esc(m[0])+'<small>'+esc(m[1])+'</small><span class="tm">'+(p?'Present '+hm(p.at):'Tap to mark')+'</span></button>'}).join("");
+return hdr()+'<div class="grid"><div class="t dk w2"><h1>'+esc(c.event)+'</h1><p class="mute push" style="margin:0">'+esc(c.venue)+' · started '+hm(c.start)+'</p></div>'
++'<div class="t okt w2"><div class="mute">Present</div><div class="big">'+n+'<span class="mute" style="font-size:22px"> / '+tot+'</span></div><div class="bar"><i style="width:'+(tot?n/tot*100:0)+'%"></i></div></div>'
++'<div class="t w4"><h2>Students</h2><div class="studs">'+rows+'</div></div>'
++'<div class="t w2"><h2>Add a student</h2><div class="row"><input id="an" placeholder="Name" aria-label="Name"><input id="ar" placeholder="Roll no." aria-label="Roll number"></div><div class="btns"><button class="ghost" data-a="add">Add and mark present</button></div><div class="err">'+esc(S.err)+'</div></div>'
++'<div class="t sun w2"><h2>Finish</h2>'+fin(n)+'</div></div>'}
+function fin(n){if(S.ask==="end")return '<p>Lock this list? It can’t be edited afterwards.</p><div class="btns"><button data-a="end2">Yes, lock list</button><button class="ghost" data-a="cancel">Keep editing</button></div>';
+if(S.ask==="drop")return '<p>Discard this session? Nothing will be saved.</p><div class="btns"><button data-a="drop2">Yes, discard</button><button class="ghost" data-a="cancel">Keep editing</button></div>';
+return '<div class="btns"><button data-a="end"'+(n?'':' disabled')+'>End and generate list</button><button class="ghost" data-a="drop">Discard</button></div>'}
+function msg(s){var L=["*Club Duty List (Verified)*",s.club,"Event: "+s.event,"Venue: "+s.venue,"Date: "+dt(s.start)+", "+hm(s.start)+" to "+hm(s.end),"Coordinator: "+s.coord,"","Students present ("+s.present.length+"):"];
+s.present.forEach(function(p,i){L.push((i+1)+". "+p.name+" ("+p.roll+")")});L.push("","Verification ID: "+s.id);return L.join("\n")}
+function vRes(){var s=S.sel;var r=s.present.map(function(p,i){return '<tr><td>'+(i+1)+'</td><td>'+esc(p.name)+'</td><td>'+esc(p.roll)+'</td><td>'+hm(p.at)+'</td></tr>'}).join("");
+return hdr()+'<div class="grid"><div class="t okt w2"><div class="seal">'+SEAL+'Verified list</div><p class="mute" style="margin-top:8px">Locked at '+hm(s.end)+'</p><div class="id">'+esc(s.id)+'</div></div>'
++'<div class="t w2"><h2>'+esc(s.event)+'</h2><dl><dt>Club</dt><dd>'+esc(s.club)+'</dd><dt>Venue</dt><dd>'+esc(s.venue)+'</dd><dt>Date</dt><dd>'+dt(s.start)+'</dd><dt>Time</dt><dd>'+hm(s.start)+' to '+hm(s.end)+'</dd><dt>Coordinator</dt><dd>'+esc(s.coord)+'</dd><dt>Present</dt><dd>'+s.present.length+' students</dd></dl></div>'
++'<div class="t w4 tbl"><h2>Students present</h2><table><tr><th>#</th><th>Student</th><th>Roll no.</th><th>Marked</th></tr>'+r+'</table></div>'
++'<div class="t dk w4"><h2>Send to faculty</h2><div class="btns" style="padding-top:0"><a class="btn" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(msg(s))+'">Share to faculty group</a><button class="lite" data-a="copy">Copy list</button><button class="ghost" data-a="home">Back</button></div><div class="err" id="note"></div></div></div>'}
+function render(){var v=S.view;if(v!=="login"&&!S.user){v=S.view="login"}else if(v==="live"&&!S.cur){v=S.view="home"}else if(v==="res"&&!S.sel){v=S.view="home"}document.getElementById("app").innerHTML=v==="login"?vLogin():v==="home"?vHome():v==="new"?vNew():v==="live"?vLive():vRes();S.err=""}
+function mk(){var a="ABCDEFGHJKLMNPQRSTUVWXYZ23456789",r="";for(var i=0;i<4;i++)r+=a[Math.floor(Math.random()*a.length)];
+var ini=S.user.club.split(" ").map(function(w){return w[0]}).join("").slice(0,3).toUpperCase(),d=new Date();return ini+"-"+String(d.getDate()).padStart(2,"0")+String(d.getMonth()+1).padStart(2,"0")+"-"+r}
+document.addEventListener("click",function(e){var b=e.target.closest("[data-a]");if(!b)return;var a=b.dataset.a,g=function(i){return document.getElementById(i)};S.ask=(a==="end"||a==="drop")?a:"";
+if(a==="in"){var n=g("n").value.trim();if(!n){S.err="Enter your name to sign in.";return render()}S.user={name:n,club:g("c").value};S.view=S.cur?"live":"home"}
+else if(a==="out"){S.user=null;S.view="login"}
+else if(a==="home"){S.view=S.cur?"live":"home"}
+else if(a==="new"){S.view=S.cur?"live":"new"}
+else if(a==="begin"){var ev=g("ev").value.trim(),vn=g("vn").value.trim();if(!ev||!vn){S.err="Add the event name and venue.";return render()}
+S.cur={event:ev,venue:vn,club:S.user.club,coord:S.user.name,start:Date.now(),members:CLUBS[S.user.club].slice(),present:[]};S.view="live"}
+else if(a==="tog"){var m=S.cur.members[+b.dataset.i],k=S.cur.present.findIndex(function(x){return x.roll===m[1]});
+if(k>-1)S.cur.present.splice(k,1);else S.cur.present.push({name:m[0],roll:m[1],at:Date.now()})}
+else if(a==="add"){var an=g("an").value.trim(),ar=g("ar").value.trim().toUpperCase();if(!an||!ar){S.err="Enter a name and roll number."}else if(S.cur.members.some(function(x){return x[1]===ar})){S.err="That roll number is already in the list."}else{S.cur.members.push([an,ar]);S.cur.present.push({name:an,roll:ar,at:Date.now()})}}
+else if(a==="end"||a==="drop"||a==="cancel"){if(a==="cancel")S.ask=""}
+else if(a==="end2"){var c=S.cur;
+var s={id:mk(),event:c.event,venue:c.venue,club:c.club,coord:c.coord,start:c.start,end:Date.now(),present:c.present.slice().sort(function(x,y){return x.at-y.at})};S.sessions.unshift(s);S.cur=null;S.sel=s;S.view="res"}
+else if(a==="drop2"){S.cur=null;S.view="home"}
+else if(a==="open"){S.sel=S.sessions.find(function(x){return x.id===b.dataset.id});S.view="res"}
+else if(a==="ver"){var id=g("vid").value.trim().toUpperCase(),f=S.sessions.find(function(x){return x.id===id});
+g("vres").innerHTML=f?'<div class="seal" style="font-size:16px">'+SEAL+'<div>Genuine list<div class="mute">'+esc(f.event)+' · '+f.present.length+' students · '+dt(f.start)+'</div></div></div>':'<div class="err">No list found for that ID.</div>';return}
+else if(a==="copy"){var t=msg(S.sel),nt=g("note");try{navigator.clipboard.writeText(t).then(function(){nt.textContent="List copied. Paste it in the faculty group."},function(){nt.textContent="Copy failed. Use Share instead."})}catch(x){nt.textContent="Copy failed. Use Share instead."}return}
+save();render()});
+load();render();
+})();
+</script>
+</body>
+</html>
